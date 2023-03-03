@@ -1,0 +1,4 @@
+---
+kav_install_folder: kesl_11.3.0.7441
+kav_install_script: akinstall.sh
+kav_server: rumsk2avm01.east.msk

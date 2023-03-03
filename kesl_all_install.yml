@@ -1,0 +1,12 @@
+---
+
+# This playbook install kaspesky antivirus
+
+- name: Install Kaspersky Antivirus with Network Agent
+  hosts: kesl
+  become: true
+
+  roles:
+    - ansible-kaspersky-all-role
+
+

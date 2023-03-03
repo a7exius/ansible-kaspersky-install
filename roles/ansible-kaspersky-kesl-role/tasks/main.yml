@@ -1,0 +1,67 @@
+
+- name: Load Variables
+  include_vars: "main.yml"
+
+- name: Load Secrets
+  include_vars: "secrets.yml"
+
+- name: "Check if kesl package is installed or not on Debian Linux family"
+  command: dpkg-query -l kesl
+  register: package_check
+  failed_when: (package_check.rc == 0) or (package_check.rc > 1)
+  changed_when: package_check.rc == 1
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: "Check if kesl package is installed or not on Red Hat Linux family"
+  command: rpm -q kesl
+  register: package_check
+  failed_when: (package_check.rc == 0) or (package_check.rc > 1)
+  changed_when: package_check.rc == 1
+  when: ansible_facts['os_family'] == "RedHat"
+    
+- name: Install cifs-utils
+  package:
+    name: cifs-utils
+    state: present
+
+- name: Create mount dir
+  ansible.builtin.file:
+    path: /opt/avinstall
+    state: directory
+    mode: '0777'
+
+- name: Mount SMB install source volume
+  ansible.posix.mount:
+    src: "//{{ kav_server }}/KLSHARE/Packages"
+    path: /opt/avinstall
+    opts: "ro,vers=3,dom={{ kav_server }},username={{ mount_user }},password={{ mount_user_password }}"
+    fstype: cifs
+    state: ephemeral
+
+- name: Clear install directory if exist
+  ansible.builtin.file:
+    path: /opt/avinstalll
+    state: absent
+
+- name: Copy install files
+  command: "cp -R /opt/avinstall/{{ kav_install_folder  }} /opt/avinstalll"
+
+- name: Setup Kaspersky Endpoint Security
+  command: "/opt/avinstalll/{{ kav_install_script }} --accept_eula"
+
+- name: Remove install directory
+  ansible.builtin.file:
+    path: /opt/avinstalll
+    state: absent
+
+- name: Unmount SMB install source
+  ansible.posix.mount:
+    path: /opt/avinstall
+    state: unmounted
+
+- name: Remove install directory
+  ansible.builtin.file:
+    path: /opt/avinstall
+    state: absent
+
+

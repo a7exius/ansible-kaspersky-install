@@ -1,0 +1,5 @@
+---
+kav_server: rumsk2avm01.east.msk
+nlkagent_rpm_folder: NetAgent_14.2.0.23324(3)
+nlkagent_deb_folder: NetAgent_14.2.0.23324(1)
+nlkagent_install_script: akinstall.sh
