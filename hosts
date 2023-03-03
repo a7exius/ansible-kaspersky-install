@@ -1,6 +1,0 @@
-[kesl]
-#rumsk4btxl02 ansible_host=10.53.5.185 ansible_port=22
-#rumsk4nxpl01 ansible_host=10.53.5.55 ansible_port=22
-#rumsk1webl15 ansible_host=10.53.5.17 ansible_port=22
-#rumsk1btxl01 ansible_host=10.53.5.9 ansible_port=22
-rumsk4webl23 ansible_host=10.53.5.127 ansible_port=22
